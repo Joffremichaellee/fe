@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
 
             $table->string('name')->unique();
+            $table->string('codigo')->unique();
             $table->string('abbreviation')->unique();
-            $table->boolean('state')->default(true); 
+            $table->boolean('state')->default(true);
 
             $table->timestamps();
         });

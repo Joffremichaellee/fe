@@ -16,7 +16,7 @@ class CurrencySeeder extends Seeder
     public function run()
     {
         Currency::create([
-            'name' => 'Nuevo sol Peruano',
+            'name' => 'PEN',
             'abbreviation' => 'S/',
             'principal' => 'si',
             'state' => 1,
@@ -25,7 +25,7 @@ class CurrencySeeder extends Seeder
         ]);
 
         Currency::create([
-            'name' => 'Dolar UE',
+            'name' => 'USD',
             'abbreviation' => 'USD',
             //'default' => 0,
             'state' => 1,

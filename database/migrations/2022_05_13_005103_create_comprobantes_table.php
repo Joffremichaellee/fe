@@ -69,22 +69,22 @@ return new class extends Migration
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
 
 
-            $table->double('mtoopergravadas', 8, 2)->nullable();//
-            $table->double('mtooperexoneradas', 8, 2)->nullable();//
-            $table->double('mtooperinafectas', 8, 2)->nullable();//
-            $table->double('mtooperexportacion', 8, 2)->nullable();//
-            $table->double('mtoopergratuitas', 8, 2)->nullable();
-            $table->double('mtoigv', 8, 2)->nullable();
-            $table->double('mtoigvgratuitas', 8, 2)->nullable();
-            $table->double('icbper', 8, 2)->nullable();
-            $table->double('totalimpuestos', 8, 2)->nullable();
-            $table->double('valorventa', 8, 2)->nullable();
-            $table->double('subtotal', 8, 2)->nullable();
-            $table->double('redondeo', 8, 2)->nullable();
-            $table->double('mtoimpventa', 8, 2)->nullable();
+            $table->double('mtoopergravadas', 10, 4)->nullable();//
+            $table->double('mtooperexoneradas', 10, 4)->nullable();//
+            $table->double('mtooperinafectas', 10, 4)->nullable();//
+            $table->double('mtooperexportacion', 10, 4)->nullable();//
+            $table->double('mtoopergratuitas', 10, 4)->nullable();
+            $table->double('mtoigv', 10, 4)->nullable();
+            $table->double('mtoigvgratuitas', 10, 4)->nullable();
+            $table->double('icbper', 10, 4)->nullable();
+            $table->double('totalimpuestos', 10, 4)->nullable();
+            $table->double('valorventa', 10, 4)->nullable();
+            $table->double('subtotal', 10, 4)->nullable();
+            $table->double('redondeo', 10, 4)->nullable();
+            $table->double('mtoimpventa', 10, 4)->nullable();
 
-            $table->double('anticipos', 8, 2)->nullable();
-            $table->double('detracciones', 8, 2)->nullable();
+            $table->double('anticipos', 10, 4)->nullable();
+            $table->double('detracciones', 10, 4)->nullable();
             $table->text('legends')->nullable();
 
 

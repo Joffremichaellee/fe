@@ -31,14 +31,18 @@ class Boleta extends Model
 
 
     //relacion de uno a muchos polimorfica, con boleta, lo mismo en factura
-    public function comprobantes()
+  /*   public function comprobantes()
     {
         return $this->morphMany('App\Models\Comprobante','comprobanteable');
-    }
+    } */
 
     public function pymenttypes(){
         return $this->hasMany(Paymenttype::class);
     }
+
+
+
+
 
 
 }

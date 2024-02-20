@@ -10,6 +10,7 @@
         "bumbummen99/shoppingcart": "^4.2",
         "darryldecode/cart": "^4.2",
         "doctrine/dbal": "^3.6",
+        "greenter/htmltopdf": "^5.0",
         "greenter/lite": "^5.0",
         "greenter/report": "^5.0",
         "guzzlehttp/guzzle": "^7.2",

@@ -60,6 +60,7 @@ class ComprobanteList extends Component
     public function render()
     {
         if ($this->readyToLoad) {
+
             // with('customer', 'local') para la carga ansiosa n+1
             $comprobantes = Comprobante::with('customer', 'local')->addSelect([
                 'nomrazonsocial' => Customer::select('nomrazonsocial')
@@ -72,6 +73,7 @@ class ComprobanteList extends Component
                     $customerQuery->where('nomrazonsocial', 'like', '%' . $this->search . '%');
                 });
             })->orderBy($this->sort, $this->direction)->paginate($this->cant);
+
         } else {
             $comprobantes = [];
         }

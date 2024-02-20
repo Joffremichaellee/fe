@@ -271,7 +271,7 @@
                                                                             wire:change="updatePrice('{{ $item->id }}', $('#p' + '{{ $item->id }}').val(), $('#r' + '{{ $item->id }}').val())"
                                                                             style="font-size: 1rem!important"
                                                                             class="w-20 text-center form-control"
-                                                                            value="{{ number_format($item->saleprice, 2) }}">
+                                                                            value="{{ number_format($item->saleprice, 4) }}">
                                                                     </div>
                                                                 </td>
 
@@ -279,7 +279,7 @@
                                                                     <div class="w-20 text-lg text-center">
                                                                         <input type="number"
                                                                             id="r{{ $item->id }}"
-                                                                            wire:change="updateQty('{{ $item->id }}', $('#p' + '{{ $item->id }}').val(), $('#r' + '{{ $item->id }}').val() )"
+                                                                            wire:change="updateQty('{{ $item->id }}', $('#p' + '{{ $item->id }}').val(), $('#r' + '{{ $item->id }}').val(), '{{ $item->mtovalorunitario }}')"
                                                                             style="font-size: 1rem!important"
                                                                             class="w-20 text-center form-control"
                                                                             value="{{ $item->quantity }}">
@@ -289,8 +289,8 @@
 
 
                                                                 <td class="p-2 whitespace-nowrap">
-                                                                    <div class="text-lg text-center">
-                                                                        {{ number_format($item->saleprice * $item->quantity, 2) }}
+                                                                    <div class="text-lg text-right">
+                                                                        {{ number_format($item->saleprice * $item->quantity, 4) }}
                                                                     </div>
                                                                 </td>
 
@@ -305,26 +305,90 @@
 
                                                             </tr>
                                                         @endforeach
-
-
-                                                    </tbody>
-
-                                                    <tfoot>
                                                         <tr>
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>
-                                                            <td>{{ $invoice['legends'][0]['value'] }}</td>
+                                                            <td></td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                   SUB-TOTAL
+                                                                </div>
+                                                            </td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                    {{ $valorventa }}
+                                                                </div>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                   ICBPER
+                                                                </div>
+                                                            </td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                    {{ $icbper }}
+                                                                </div>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                   IGV
+                                                                </div>
+                                                            </td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                    {{ $mtoigv }}
+                                                                </div>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                    </tbody>
+
+                                                    <tfoot>
+
+                                                        <tr>
+
+                                                            {{-- <td>{{ $valorventa }}</td>
+                                                            <td>{{ $totalimpuestos }}</td>
+                                                            <td>{{ $subtotall }}</td> --}}
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>{{ $totalenletras }}</td>
                                                             <td class="text-right">Total: {{ $moneda }}</td>
-                                                            <td class="text-center"> {{ $total }} </td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                    {{ $subtotal }}
+                                                                </div>
+                                                            </td>
+
                                                             <td></td>
                                                         </tr>
                                                     </tfoot>
 
                                                 </table>
-                                                <div>
-
-                                                </div>
+                                               {{--  <div>
+                                                    mtoigv = {{ $mtoigv }} /
+                                                    mtoigvgratuitas = {{ $mtoigvgratuitas }}  /
+                                                    icbper= {{ $icbper }}
+                                                    totalimpuestos={{ $totalimpuestos }}
+                                                    valorventa={{ $valorventa }}
+                                                </div> --}}
 
                                             </div>
                                         </div>
@@ -333,6 +397,8 @@
                                 @else
                                     <h5 class="text-center text-muted">Agrega productos para la venta</h5>
                                 @endif
+
+
                             </div>
                         </section>
 

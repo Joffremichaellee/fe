@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('comprobante_producto', function (Blueprint $table) {
             $table->id();
 
-            $table->double('cant', 8, 2)->nullable();
-            $table->double('price', 8, 2)->nullable();//precio venta
-            $table->double('subtotal', 8, 2)->nullable();
+            $table->double('cant', 10, 4)->nullable();
+            $table->double('price', 10, 4)->nullable();//precio venta
+            $table->double('subtotal', 10, 4)->nullable();
 
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
@@ -30,11 +30,11 @@ return new class extends Migration
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
 
             $table->string('codigobarras')->nullable();
-            $table->double('mtobaseigv', 8, 2)->nullable();
-            $table->double('igv', 8, 2)->nullable();
-            $table->double('icbper', 8, 2)->nullable();
-            $table->double('totalimpuestos', 8, 2)->nullable();
-            $table->double('mtovalorventa', 8, 2)->nullable();
+            $table->double('mtobaseigv', 10, 4)->nullable(); // cantidad * precio sin igv
+            $table->double('igv', 10, 4)->nullable();//ejemlo 18 soles, 36 soles
+            $table->double('icbper', 10, 4)->nullable();//ejemlo 0.8 soles   0.2x 4
+            $table->double('totalimpuestos', 10, 4)->nullable();
+            $table->double('mtovalorventa', 10, 4)->nullable();
 
 
             $table->timestamps();

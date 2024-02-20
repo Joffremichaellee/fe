@@ -15,13 +15,15 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
+
         Product::create([
             'codigo' => '1',
             'codigobarras' => '1b',
             'name' => 'camisa',
             'description' => 'descripcion de camisa',
             'purchaseprice' => 98,
-            'saleprice' => 110,
+            'saleprice' => 118,
+            'mtovalorunitario' => 100, //precio sin igv
             'salepricemin' => 100,
             'company_id'=> 1,
             'currency_id'=> 1,
@@ -39,7 +41,8 @@ class ProductSeeder extends Seeder
             'name' => 'polo',
             'description' => 'descripcion de polo',
             'purchaseprice' => 50,
-            'saleprice' => 70,
+            'saleprice' => 59,
+            'mtovalorunitario' => 50, //precio sin igv
             'salepricemin' => 60,
             'company_id'=> 1,
             'currency_id'=> 1,
@@ -56,9 +59,10 @@ class ProductSeeder extends Seeder
             'codigobarras' => '3ax',
             'name' => 'pantalon',
             'description' => 'descripcion de pantalon',
-            'purchaseprice' => 53,
-            'saleprice' => 73,
-            'salepricemin' => 63,
+            'purchaseprice' => 8,
+            'saleprice' => 11.8,
+            'salepricemin' => 10,
+            'mtovalorunitario' => 10, //precio sin igv
             'company_id'=> 1,
             'currency_id'=> 1,
             'um_id'=> 1,
@@ -74,9 +78,10 @@ class ProductSeeder extends Seeder
             'codigobarras' => '4ax',
             'name' => 'casaca',
             'description' => 'descripcion de casaca',
-            'purchaseprice' => 57,
-            'saleprice' => 77,
-            'salepricemin' => 67,
+            'purchaseprice' => 36,
+            'saleprice' => 47.20,
+            'mtovalorunitario' => 40, //precio sin igv
+            'salepricemin' => 45,
             'company_id'=> 1,
             'currency_id'=> 1,
             'um_id'=> 1,
@@ -94,7 +99,8 @@ class ProductSeeder extends Seeder
             'name' => 'buzo',
             'description' => 'descripcion de buzo',
             'purchaseprice' => 83,
-            'saleprice' => 103,
+            'saleprice' => 141.60,
+            'mtovalorunitario' => 120, //precio sin igv
             'salepricemin' => 93,
             'company_id'=> 1,
             'currency_id'=> 1,
@@ -114,9 +120,10 @@ class ProductSeeder extends Seeder
             'codigobarras' => '1bb',
             'name' => 'camisa',
             'description' => 'descripcion de camisa',
-            'purchaseprice' => 98,
-            'saleprice' => 110,
-            'salepricemin' => 100,
+            'purchaseprice' => 900,
+            'saleprice' => 1180,
+            'mtovalorunitario' => 1000, //precio sin igv
+            'salepricemin' => 1080,
             'company_id'=> 2,
             'currency_id'=> 1,
             'um_id'=> 1,
@@ -132,9 +139,10 @@ class ProductSeeder extends Seeder
             'codigobarras' => '2bb',
             'name' => 'polo',
             'description' => 'descripcion de polo',
-            'purchaseprice' => 50,
-            'saleprice' => 70,
-            'salepricemin' => 60,
+            'purchaseprice' => 120,
+            'saleprice' => 177,
+            'mtovalorunitario' => 150, //precio sin igv
+            'salepricemin' => 170,
             'company_id'=> 2,
             'currency_id'=> 1,
             'um_id'=> 1,
@@ -150,9 +158,10 @@ class ProductSeeder extends Seeder
             'codigobarras' => '3axx',
             'name' => 'pantalon',
             'description' => 'descripcion de pantalon',
-            'purchaseprice' => 53,
-            'saleprice' => 73,
-            'salepricemin' => 63,
+            'purchaseprice' => 153,
+            'saleprice' => 354,
+            'mtovalorunitario' => 300, //precio sin igv
+            'salepricemin' => 320,
             'company_id'=> 2,
             'currency_id'=> 1,
             'um_id'=> 1,
@@ -168,9 +177,10 @@ class ProductSeeder extends Seeder
             'codigobarras' => '4axx',
             'name' => 'casaca',
             'description' => 'descripcion de casaca',
-            'purchaseprice' => 57,
-            'saleprice' => 77,
-            'salepricemin' => 67,
+            'purchaseprice' => 30,
+            'saleprice' => 35.4,
+            'mtovalorunitario' => 30, //precio sin igv
+            'salepricemin' => 33,
             'company_id'=> 2,
             'currency_id'=> 1,
             'um_id'=> 1,
@@ -187,9 +197,10 @@ class ProductSeeder extends Seeder
             'codigobarras' => '5mnn',
             'name' => 'buzo',
             'description' => 'descripcion de buzo',
-            'purchaseprice' => 83,
-            'saleprice' => 103,
-            'salepricemin' => 93,
+            'purchaseprice' => 13,
+            'saleprice' => 23.60,
+            'mtovalorunitario' => 20, //precio sin igv
+            'salepricemin' => 23,
             'company_id'=> 2,
             'currency_id'=> 1,
             'um_id'=> 1,
@@ -200,7 +211,25 @@ class ProductSeeder extends Seeder
             'state' => 1,
         ]);
 
-
+        Product::create([
+            'codigo' => '16',
+            'codigobarras' => '1bo',
+            'name' => 'bolsa',
+            'description' => 'descripcion de labolsa',
+            'purchaseprice' => 0.01,
+            'saleprice' => 0.059,
+            'mtovalorunitario' => 0.05, //precio sin igv
+            'salepricemin' => 0.05,
+            'company_id'=> 1,
+            'currency_id'=> 1,
+            'um_id'=> 1,
+            'modelo_id'=> 1,
+            'category_id'=> 1,
+            'tipoafectacion_id'=> 1,
+            'brand_id'=> 1,
+            'state' => 1,
+            'esbolsa' => 1,
+        ]);
 
 
     }

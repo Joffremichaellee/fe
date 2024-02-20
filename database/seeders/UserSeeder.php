@@ -115,7 +115,7 @@ class UserSeeder extends Seeder
         $company = Company::create([
             'ruc' => '20447393302',
             'razonsocial' => 'TICOM',
-            'ubigeo' => "10012",
+            'ubigeo' => "150101",
             'direccion' => 'Av. Peru 1255',
             'currency_id' => 1,
             'soluser' => "MODDATOS",
