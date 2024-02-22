@@ -16,155 +16,59 @@
                     <div>
 
 
-                        {{-- <div class="py-2 mb-1" wire:ignore> --}}
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-6">
-
-                            <div class="mb-4 mr-4 ">
-                                {{-- <label>Proveedores </label> --}}
-                                <x-jet-label value="Tipo Documento" />
-                                {{-- select2 --}}
-                                <select wire:model="tipodocumento_id"
-                                    class="h-10 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
-                                    data-placeholder="Selecccione un Proveedor" style="width:100%">
-                                    <option value="" selected disabled>Seleccione</option>
-                                    @foreach ($tipodocumentos as $tipodocumento)
-                                        <option value="{{ $tipodocumento->id }}">{{ $tipodocumento->abbreviation }}
-                                        </option>
-                                    @endforeach
-
-                                </select>
-                                <x-jet-input-error for="tipodocumento_id" />
+                        <form wire:submit.prevent="store">
+                            <div class="space-y-4">
+                                
+                        
+                                
+                        
+                                {{-- <x-jet-input 
+                                    wire:model.defer="company.ruc"
+                                    label="RUC"
+                                    placeholder="Ingrese el RUC de la empresa" /> --}}
+                                <x-jet-input
+                                    wire:model.defer="ruc"
+                                    label="RUC"
+                                    placeholder="Ingrese el RUC de la empresa"
+                                    type="text"
+                                    maxlength="11">
+                                    <x-slot name="append">
+                                        <div class="absolute inset-y-0 right-0 flex items-center p-0.5">
+                                            
+                                        </div>
+                                    </x-slot>
+                                </x-jet-input>
+                                <x-jet-secondary-button class="ml-2 mr-2" wire:click="searchRuc">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </x-jet-secondary-button>
+                        
+                                <x-jet-input 
+                                    wire:model.defer="razonsocial"
+                                    label="Razon social"
+                                    placeholder="Ingrese la razón social de la empresa" />
+                        
+                                
+                        
+                        
+                                
+                              
+                        
+                                <div class="flex justify-end">
+                                    <x-jet-button type="submit" dark>
+                                        Guardar
+                                    </x-jet-button>
+                                </div>
+                        
+                                {{-- <pre><code>{{ json_encode($company, JSON_PRETTY_PRINT) }}</code></pre> --}}
                             </div>
+                        </form>
+                            
 
-                            <div class="mb-4 mr-4 ">
-                                {{-- <label>Proveedores </label> --}}
-                                <x-jet-label value="Cliente" />
-                                {{-- select2 --}}
-                                <select wire:model="customer_id"
-                                    class="h-10 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
-                                    data-placeholder="Selecccione un Proveedor" style="width:100%">
-                                    <option value="" selected disabled>Seleccione</option>
-                                    @foreach ($customers as $customer)
-                                        <option value="{{ $customer->id }}">{{ $customer->nomrazonsocial }}
-                                        </option>
-                                    @endforeach
-
-                                </select>
-                                <x-jet-input-error for="customer_id" />
-                            </div>
-
-
-                            <div class="mb-4 mr-4 ">
-                                {{-- <label>Proveedores </label> --}}
-                                <x-jet-label value="comprobante" />
-                                {{-- select2 --}}
-                                <select wire:model="tipocomprobante_id"
-                                    class="h-10 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
-                                    data-placeholder="Selecccione tipo Comprobante" style="width:100%">
-                                    <option value="" selected disabled>Seleccione</option>
-                                    @foreach ($tipocomprobantes as $tipocomprobante)
-                                        <option value="{{ $tipocomprobante->id }}">{{ $tipocomprobante->name }}
-                                        </option>
-                                    @endforeach
-
-                                </select>
-                                <x-jet-input-error for="tipocomprobante_id" />
-                            </div>
-
-
-
-                            <div class="mb-1 mr-4">
-                                <x-jet-label value="Serie" />
-                                <x-jet-input type="text" placeholder="Serie" class="w-full h-10 uppercase"
-                                    wire:model="serie" />
-                                <x-jet-input-error for="serie" />
-                            </div>
-
-                            <div class="mb-1 mr-4">
-                                <x-jet-label value="Numero" />
-                                <x-jet-input type="text" placeholder="Número" class="w-full h-10 uppercase"
-                                    wire:model="numero" />
-                                <x-jet-input-error for="numero" />
-                            </div>
-
-
-                            <div class="mb-1 mr-4">
-                                <x-jet-label value="Forma de pago:" />
-
-                                <select wire:model="paymenttype_id"
-                                    class="h-10 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    data-placeholder="Selecccione forma de pago" style="width:100%">
-                                    <option value="" selected disabled>Seleccione</option>
-
-                                    <option value="1">Contado</option>
-
-                                    <option value="2">Credito</option>
-                                </select>
-                                <x-jet-input-error for="paymenttype_id" />
-                            </div>
-
-
-
-                            {{--  <div class="mb-4 mr-4">
-                                <x-jet-label value="Fecha de Emisión" />
-                                <x-jet-input id="datepicker" type="text" wire:model="fechaemision" value="{{ old('fechaemision') }}"
-                                     class="w-full h-10" placeholder="fecha de emisión" />
-                                <x-jet-input-error for="fechaemision" />
-                            </div> --}}
-
-                            <div class="mb-4 mr-4">
-                                <x-jet-label value="Fecha de Emisión" />
-                                <x-jet-input type="date" max="{{ date('Y-m-d') }}" min="{{ date('Y-m-d', strtotime('-3 days')) }}" wire:model="fechaemision" value="{{ old('fechaemision') }}"
-                                    class="w-full h-10" placeholder="fecha de emisión" />
-                                <x-jet-input-error for="fechaemision" />
-                            </div>
-
-
-                            {{--  <div class="mb-4 mr-4" >
-                                <x-jet-label value="Fecha de Vencimiento:" />
-                                <x-jet-input id="datepicker2" type="text" wire:model="fechavencimiento" value="{{ old('fechavencimiento') }}"
-                                class="w-full h-10" placeholder="fecha de pago"/>
-                                <x-jet-input-error for="fechavencimiento" />
-
-                            </div> --}}
-
-                            <div class="mb-4 mr-4">
-                                <x-jet-label value="Fecha de Vencimiento:" />
-                                <x-jet-input type="date" min="{{ date('Y-m-d', strtotime('-3 days')) }}"  wire:model="fechavencimiento"
-                                    value="{{ old('fechavencimiento') }}" class="w-full h-10"
-                                    placeholder="fecha de pago" />
-                                <x-jet-input-error for="fechavencimiento" />
-
-                            </div>
-
-
-
-
-                            <div class="mb-1 mr-4">
-                                <x-jet-label value="Moneda" />
-                                <select wire:model="currency_id"
-                                    class="h-10 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    data-placeholder="Selecccione la moneda" style="width:100%">
-                                    <option value="" selected disabled>Seleccione</option>
-                                    @foreach ($currencies as $currency)
-                                        <option value="{{ $currency->id }}">{{ $currency->abbreviation }}</option>
-                                    @endforeach
-
-                                </select>
-                                <x-jet-input-error for="currency_id" />
-                            </div>
-
-
-                            <div class="col-span-2 form-group {{ $errors->has('nota') ? 'text-danger' : '' }} ">
-                                {{-- <label>Nota de la compra</label> --}}
-                                <textarea rows="2" wire:model="nota" class="w-full form-control" placeholder="Ingrese Nota del Comprobante ">{{ old('nota') }}</textarea>
-                                {!! $errors->first('nota', '<span class="help-block">:message</span>') !!}
-
-
-                            </div>
-
-
-                        </div>
+                            
 
 
                         <hr class="mt-5 mb-5">

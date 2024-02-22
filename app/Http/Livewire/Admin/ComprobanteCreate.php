@@ -36,6 +36,8 @@ class ComprobanteCreate extends Component
     public $mtoopergravadas, $mtooperexoneradas, $mtooperinafectas, $mtooperexportacion, $mtoopergratuitas, $mtoigv, $mtoigvgratuitas, $icbper, $totalimpuestos;
     public $valorventa, $subtotall, $mtoimpventa, $redondeo, $legends;
     public $totalenletras;
+    public $razonsocial;
+    public $ruc;
 
 
     //public $salesCartInstance = 'salesCart';
@@ -472,6 +474,25 @@ class ComprobanteCreate extends Component
 
 
 
+
+    public function searchRuc(){
+
+        $sunat = new \jossmp\sunat\ruc([
+            'representantes_legales' 	=> false,
+            'cantidad_trabajadores' 	=> false,
+            'establecimientos' 			=> false,
+            'deuda' 					=> false,
+        ]);
+    
+        $query = $sunat->consulta($this->ruc);
+
+        if ($query->success) {
+
+            $this->razonsocial = $query->result->razon_social;
+            
+
+        }
+    }
 
     //guardamos el comprobante
     public function save()

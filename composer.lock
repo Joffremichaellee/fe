@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f80beacb0e9442c03683eb7de00c5f6f",
+    "content-hash": "d00c449776047811d04adcc486491146",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2512,6 +2512,157 @@
                 }
             ],
             "time": "2020-06-13T08:05:20+00:00"
+        },
+        {
+            "name": "jossmp/navigate",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/JossMP/navigate.git",
+                "reference": "b1a0d9b2c3df8264fc0047f8728b805ff2802053"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/JossMP%2Fnavigate/repository/archive.zip?sha=b1a0d9b2c3df8264fc0047f8728b805ff2802053",
+                "reference": "b1a0d9b2c3df8264fc0047f8728b805ff2802053",
+                "shasum": ""
+            },
+            "require-dev": {
+                "php": ">=5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "jossmp\\navigate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Josue Mazco Puma",
+                    "email": "jossmp@gmail.com",
+                    "homepage": "https://gitlab.com/JossMP",
+                    "role": "Developers"
+                }
+            ],
+            "description": "Libreria para el uso de cURL",
+            "homepage": "https://gitlab.com/JossMP/",
+            "keywords": [
+                "curl",
+                "navigate",
+                "scraping"
+            ],
+            "support": {
+                "issues": "https://gitlab.com/api/v4/projects/15827425/issues"
+            },
+            "time": "2021-04-25T20:17:41+00:00"
+        },
+        {
+            "name": "jossmp/response",
+            "version": "v1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/JossMP/response.git",
+                "reference": "729920fdc3f6109627e2270379cf98c5e3202f46"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/JossMP%2Fresponse/repository/archive.zip?sha=729920fdc3f6109627e2270379cf98c5e3202f46",
+                "reference": "729920fdc3f6109627e2270379cf98c5e3202f46",
+                "shasum": ""
+            },
+            "require-dev": {
+                "php": ">=5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "jossmp\\response\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Josue Mazco Puma",
+                    "email": "jossmp@gmail.com",
+                    "homepage": "https://gitlab.com/JossMP",
+                    "role": "Developers"
+                }
+            ],
+            "description": "Convierte array en Objeto",
+            "homepage": "https://gitlab.com/JossMP/",
+            "keywords": [
+                "Array2Object",
+                "array",
+                "object"
+            ],
+            "support": {
+                "issues": "https://gitlab.com/api/v4/projects/15987639/issues"
+            },
+            "time": "2021-06-23T07:38:00+00:00"
+        },
+        {
+            "name": "jossmp/sunatphp",
+            "version": "v4.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JossMP/sunatphp.git",
+                "reference": "7e94ba2c0c3f424bc86aaad857db1aafddb997da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JossMP/sunatphp/zipball/7e94ba2c0c3f424bc86aaad857db1aafddb997da",
+                "reference": "7e94ba2c0c3f424bc86aaad857db1aafddb997da",
+                "shasum": ""
+            },
+            "require": {
+                "jossmp/navigate": "^1.0.2",
+                "jossmp/response": "^1.0.2"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "lib-curl": "*",
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "jossmp\\sunat\\": "src",
+                    "jossmp\\sunat\\model\\": "src/model/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Josue Mazco Puma",
+                    "email": "jossmp@gmail.com",
+                    "homepage": "https://peruanosenlinea.com/",
+                    "role": "Developers"
+                }
+            ],
+            "description": "Clase para realizar consultas a sunat Peru mediante el numero de ruc o dni",
+            "homepage": "https://github.com/JossMP/sunatphp",
+            "keywords": [
+                "consulta",
+                "curl",
+                "peru",
+                "php",
+                "sunat"
+            ],
+            "support": {
+                "issues": "https://github.com/JossMP/sunatphp/issues",
+                "source": "https://github.com/JossMP/sunatphp/tree/v4.0.1"
+            },
+            "time": "2021-07-04T15:58:28+00:00"
         },
         {
             "name": "laravel/fortify",
