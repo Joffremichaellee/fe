@@ -185,8 +185,11 @@ class SunatService
     public function send()
     {
 
+<<<<<<< HEAD
        //dd($this->voucher);
 
+=======
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         $this->result = $this->see->send($this->voucher);
         $this->boleta->send_xml = true;
         $this->boleta->sunat_success = $this->result->isSuccess();
@@ -263,6 +266,52 @@ class SunatService
                 'title' => 'Excepción',
                 'footer' => $this->boleta->cdr_description,
             ]); */
+<<<<<<< HEAD
+=======
+        }
+    }
+
+
+
+    public function generatePdfReport()
+    {
+
+        $htmlReport = new HtmlReport(resource_path('views/sunat/template'), ['strict_variables' => true]);
+        $htmlReport->setTemplate((new DefaultTemplateResolver())->getTemplate($this->voucher));
+
+        $report = new PdfReport($htmlReport);
+        $report->setOptions([
+            'no-outline',
+            'viewport-size' => '1280x1024',
+            'page-width' => '21cm',
+            'page-height' => '29.7cm',
+        ]);
+        $report->setBinPath(env('WKHTMLTOPDF_PATH')); // Ruta relativa o absoluta de wkhtmltopdf
+
+        $params = [
+            'system' => [
+                'logo' => $this->company->rectangle_image_path ? Storage::get($this->company->rectangle_image_path) : file_get_contents('img/logos/logo.png'), // Logo de Empresa
+                'hash' => $this->boleta->hash, // Valor Resumen
+            ],
+            'user' => [
+                'header'     => "Telf: <b>{$this->company->phone}</b>", // Texto que se ubica debajo de la dirección de empresa
+                'extras'     => [
+                    // Leyendas adicionales
+                    ['name' => 'CONDICION DE PAGO', 'value' => 'Efectivo'],
+                    ['name' => 'VENDEDOR', 'value' => 'GITHUB SELLER'],
+                ],
+                'footer' => '<p>Nro Resolucion: <b>3232323</b></p>'
+            ]
+        ];
+
+        $pdf = $report->render($this->voucher, $params);
+
+        if ($pdf) {
+            $this->boleta->pdf_path = 'invoices/pdf/' . $this->voucher->getName() . '.pdf';
+            Storage::put($this->boleta->pdf_path, $pdf, 'public');
+
+            $this->boleta->save();
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         }
     }
 

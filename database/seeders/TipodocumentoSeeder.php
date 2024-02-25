@@ -18,6 +18,7 @@ class TipodocumentoSeeder extends Seeder
 
 
         Tipodocumento::create([
+<<<<<<< HEAD
             'name' => 'Doc.trib.no.dom.sin.ruc',
             'codigo' => '0',
             'abbreviation'=> 'DOC',
@@ -26,6 +27,9 @@ class TipodocumentoSeeder extends Seeder
 
         Tipodocumento::create([
             'name' => 'Documento Nacional de identidad',
+=======
+            'name' => 'documento nacional de identidad',
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
             'codigo' => '1',
             'abbreviation'=> 'DNI',
             'state' => 1,
@@ -45,12 +49,15 @@ class TipodocumentoSeeder extends Seeder
             'abbreviation'=> 'RUC',
             'state' => 1,
         ]);
+<<<<<<< HEAD
         Tipodocumento::create([
             'name' => 'Pasaporte',
             'codigo' => '7',
             'abbreviation'=> 'Pasaporte',
             'state' => 1,
         ]);
+=======
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
 
     }
 }

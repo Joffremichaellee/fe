@@ -60,7 +60,11 @@ class ComprobanteList extends Component
     public function render()
     {
         if ($this->readyToLoad) {
+<<<<<<< HEAD
             $company_id = auth()->user()->employee->company->id;
+=======
+
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
             // with('customer', 'local') para la carga ansiosa n+1
             $comprobantes = Comprobante::with('customer', 'local')->addSelect([
                 'nomrazonsocial' => Customer::select('nomrazonsocial')

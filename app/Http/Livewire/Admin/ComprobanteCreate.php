@@ -41,6 +41,7 @@ class ComprobanteCreate extends Component
     public $mtoopergravadas, $mtooperexoneradas, $mtooperinafectas, $mtooperexportacion, $mtoopergratuitas, $mtoigv, $mtoigvgratuitas, $icbper, $totalimpuestos;
     public $valorventa, $subtotall, $mtoimpventa, $redondeo, $legends;
     public $totalenletras;
+<<<<<<< HEAD
     public $detraccion, $tipodeoperacion_id = "", $tipodeoperacion_codigo = "";
 
     public $razon_social;
@@ -51,6 +52,10 @@ class ComprobanteCreate extends Component
 
 
 
+=======
+    public $razonsocial;
+    public $ruc;
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
 
 
     //public $salesCartInstance = 'salesCart';
@@ -64,8 +69,13 @@ class ComprobanteCreate extends Component
         //$this->fechaemision = Carbon::now()->format('d m Y');
         $this->fechaemision = Carbon::now()->format('Y-m-d'); //Y-m-d es el formato en el cual se guardara en la BD, la vista mostrara dd/mm/yyy es por el navegadory la configuracion de la pc pero al escoger la fecha automaticamente lo convierte a Y-m-d y lo guarda en la BD
 
+<<<<<<< HEAD
         $this->igv = Impuesto::where('siglas', 'IGV')->value('valor'); //es el 18%
         $this->factoricbper = Impuesto::where('siglas', 'ICBPER')->value('valor'); //es 0.2
+=======
+        $this->igv = Impuesto::where('siglas', 'IGV')->value('valor');//es el 18%
+        $this->factoricbper = Impuesto::where('siglas', 'ICBPER')->value('valor');//es 0.2
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         /* $this->moneda = Currency::where('default', 1)
         ->value('abbreviation'); */
         //$this->moneda = Company::where('id', $numero)->where('currency_id', );
@@ -73,8 +83,12 @@ class ComprobanteCreate extends Component
         $this->moneda = auth()->user()->employee->company->currency->abbreviation ?? 'Sol';
         $this->company = auth()->user()->employee->company;
 
+<<<<<<< HEAD
 
         $this->company_id = auth()->user()->employee->company->id; //compañia logueaada
+=======
+        $this->company_id = auth()->user()->employee->company->id;//compañia logueaada
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         //$this->moneda = Currency::find($this->currency_id)->abbreviation;
         //$this->currency_id = $currency;
     }
@@ -103,7 +117,11 @@ class ComprobanteCreate extends Component
                 $product->tipoafectacion->codigo,
                 $product->saleprice,
                 $product->mtovalorgratuito,
+<<<<<<< HEAD
                 $product->mtovalorunitario, //precio del producto sin igv
+=======
+                $product->mtovalorunitario,//precio del producto sin igv
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
                 $product->esbolsa,
                 $quantity
             );
@@ -125,30 +143,57 @@ class ComprobanteCreate extends Component
             $newQuantity = $productotemporal->quantity + $quantity;
             $newSubtotal = $newQuantity * $saleprice; //incluye igv
 
+<<<<<<< HEAD
             $mtovalorunitario = $saleprice / (1 + ($this->igv * 0.01)); //actualizamos//precio de producto sin inc igv ejemplo 100
             $mtobaseigv = $newQuantity * $mtovalorunitario; //cantidad * precio sin igv
             $icbper = $esbolsa == 1 ? ($newQuantity * $this->factoricbper) : 0; //$quantity * $this->factoricbper  ejemplo 5*0.2
             $igv = $newSubtotal - ($newQuantity * $mtovalorunitario); //es 118 -100= 18soles
             $totalimpuestos = $icbper + $igv;
             $mtovalorventa = $mtovalorunitario * $newQuantity; //subtotal sin inc IGV ejemplo 100 x 2 = 200
+=======
+            $mtovalorunitario = $saleprice/(1 + ($this->igv*0.01));//actualizamos//precio de producto sin inc igv ejemplo 100
+            $mtobaseigv = $newQuantity*$mtovalorunitario;//cantidad * precio sin igv
+            $icbper = $esbolsa == 0 ? ($newQuantity * $this->factoricbper) : 0; //$quantity * $this->factoricbper  ejemplo 5*0.2
+            $igv = $newSubtotal - ($newQuantity*$mtovalorunitario);//es 118 -100= 18soles
+            $totalimpuestos = $icbper + $igv;
+            $mtovalorventa = $mtovalorunitario * $newQuantity;//subtotal sin inc IGV ejemplo 100 x 2 = 200
+
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
             //$this->saleprice = $saleprice;
             //dd($quantity*$mtovalorunitario);
             $productotemporal->update([
                 'quantity' => $newQuantity,
                 'saleprice' => $saleprice,
                 'mtovalorunitario' => $mtovalorunitario, //precio de producto sin inc igv ejemplo 100
+<<<<<<< HEAD
                 'subtotal' => $newSubtotal, //incluido igv
                 'mtobaseigv' => $mtobaseigv, //cantidad * precio sin igv
                 'igv' => $igv, //es 118 -100= 18soles
                 'icbper' => $icbper,
                 'totalimpuestos' => $totalimpuestos,
                 'mtovalorventa' => $mtovalorventa, //subtotal sin inc IGV ejemplo 100 x 2 = 200
+=======
+                'subtotal' => $newSubtotal,//incluido igv
+                'mtobaseigv' => $mtobaseigv,//cantidad * precio sin igv
+                'igv' => $igv,//es 118 -100= 18soles
+                'icbper' => $icbper,
+                'totalimpuestos' => $totalimpuestos,
+                'mtovalorventa' => $mtovalorventa,//subtotal sin inc IGV ejemplo 100 x 2 = 200
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
             ]);
+
+
         } else { //si el producto no esta en temporal lo creamos
 
+<<<<<<< HEAD
             $subtotal = $quantity * $saleprice; //subtotal incluye igv y es de 1 registro
             $icbper = $esbolsa == 1 ? ($quantity * $this->factoricbper) : 0; //$quantity * $this->factoricbper  ejemplo 5*0.2 //$esbolsa == 1 indica que es bolsa en la tabla products
             $igv = $subtotal - ($quantity * $mtovalorunitario); //es 118 -100= 18soles
+=======
+            $subtotal = $quantity * $saleprice;
+            $icbper = $esbolsa == 0 ? ($quantity * $this->factoricbper) : 0; //$quantity * $this->factoricbper  ejemplo 5*0.2
+            $igv = $subtotal - ($quantity*$mtovalorunitario); //es 118 -100= 18soles
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
             Temporal::Create([
                 'company_id' => $company_id,
                 'employee_id' => auth()->user()->employee->id,
@@ -156,6 +201,7 @@ class ComprobanteCreate extends Component
                 'codigobarras' => $codigobarras,
                 'name' => $name,
                 'um' => $um,
+<<<<<<< HEAD
                 'tipafeigv' => $tipafeigv, //esta en la tabla productos y no cambia, toma valores de 10 Gravado - Operación Onerosa tabla tipo afectacion del igv
                 'saleprice' => $saleprice, //es precio de producto incluido igv  ejemplo 118, mtoPrecioUnitario
                 'mtovalorgratuito' => $mtovalorgratuito,
@@ -164,12 +210,26 @@ class ComprobanteCreate extends Component
                 'quantity' => $quantity,
                 'porcentajeigv' => $this->igv,  //igv lo tenemos en el mount es 18%
                 'subtotal' => $subtotal, //suntotal incluye igv
+=======
+                'tipafeigv' => $tipafeigv,//esta en la tabla productos y no cambia, toma valores de 10 Gravado - Operación Onerosa tabla tipo afectacion del igv
+                'saleprice' => $saleprice,//es precio de producto incluido igv  ejemplo 118, mtoPrecioUnitario
+                'mtovalorgratuito' => $mtovalorgratuito,
+                'mtovalorunitario' => $mtovalorunitario, //precio de producto sin inc igv ejemplo 100
+                'mtobaseigv' => $quantity*$mtovalorunitario,//cantidad * precio sin igv
+                'quantity' => $quantity,
+                'porcentajeigv' => $this->igv,  //igv lo tenemos en el mount es 18%
+                'subtotal' => $subtotal,
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
                 'igv' => $igv, //ejemplo es es 118 -100= 18soles
                 'factoricbper' => $this->factoricbper,  //factoricbper lo tenemos en el mount es 0.2
                 //'icbper' => $quantity * $this->factoricbper,
                 'icbper' => $icbper,
                 'totalimpuestos' => $icbper + $igv,
+<<<<<<< HEAD
                 'mtovalorventa' => $mtovalorunitario * $quantity, //subtotal sin inc IGV ejemplo 100 x 2 = 200
+=======
+                'mtovalorventa' => $mtovalorunitario * $quantity,//subtotal sin inc IGV ejemplo 100 x 2 = 200
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
                 'esbolsa' => $esbolsa,
 
                 // 'subtotal' => $saleprice*1,
@@ -181,6 +241,7 @@ class ComprobanteCreate extends Component
     }
 
 
+<<<<<<< HEAD
     public function searchRuc()
     {
 
@@ -206,10 +267,13 @@ class ComprobanteCreate extends Component
 
 
 
+=======
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
     public function getTotales()
     {
 
         $this->mtoopergravadas = Temporal::where('company_id', $this->company_id)
+<<<<<<< HEAD
             ->where('employee_id', auth()->user()->employee->id)
             ->where('tipafeigv', '10')
             ->sum('mtovalorventa'); //$mtovalorventa = $mtovalorunitario * $newQuantity;//es el subtotal sin inc IGV ejemplo 100 x 2 = 200
@@ -244,10 +308,47 @@ class ComprobanteCreate extends Component
             ->where('employee_id', auth()->user()->employee->id)
             ->whereNotIn('tipafeigv', ['10', '20', '30', '40'])
             ->sum('igv');
+=======
+        ->where('employee_id', auth()->user()->employee->id)
+        ->where('tipafeigv', '10')
+        ->sum('mtovalorventa');
+
+
+        $this->mtooperexoneradas = Temporal::where('company_id', $this->company_id)
+        ->where('employee_id', auth()->user()->employee->id)
+        ->where('tipafeigv', '20')
+        ->sum('mtovalorventa');
+
+        $this->mtooperinafectas =  Temporal::where('company_id', $this->company_id)
+        ->where('employee_id', auth()->user()->employee->id)
+        ->where('tipafeigv', '30')
+        ->sum('mtovalorventa');
+
+        $this->mtooperexportacion =  Temporal::where('company_id', $this->company_id)
+        ->where('employee_id', auth()->user()->employee->id)
+        ->where('tipafeigv', '40')
+        ->sum('mtovalorventa');
+
+        $this->mtoopergratuitas =  Temporal::where('company_id', $this->company_id)
+        ->where('employee_id', auth()->user()->employee->id)
+        ->whereNotIn('tipafeigv', ['10', '20', '30', '40'])
+        ->sum('mtovalorventa');
+
+        $this->mtoigv =  Temporal::where('company_id', $this->company_id)//es la suma de todos los igv
+        ->where('employee_id', auth()->user()->employee->id)
+        ->whereIn('tipafeigv', ['10', '20', '30', '40'])
+        ->sum('igv');
+
+        $this->mtoigvgratuitas =  Temporal::where('company_id', $this->company_id)
+        ->where('employee_id', auth()->user()->employee->id)
+        ->whereNotIn('tipafeigv', ['10', '20', '30', '40'])
+        ->sum('igv');
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
 
 
 
         $this->icbper =  Temporal::where('company_id', $this->company_id)
+<<<<<<< HEAD
             ->where('employee_id', auth()->user()->employee->id)
             ->where('esbolsa', 1)
             ->sum('icbper');
@@ -267,6 +368,25 @@ class ComprobanteCreate extends Component
         $this->mtoimpventa = floatval($this->subtotall);
 
         //$this->redondeo = $this->subtotall - $this->mtoimpventa;
+=======
+        ->where('employee_id', auth()->user()->employee->id)
+        ->where('esbolsa',1)
+        ->sum('icbper');
+
+        $this->totalimpuestos = number_format($this->mtoigv + $this->icbper, 4);//formatea a 4 decimales si tiene 6 dcimales solo muestra 4 pero no redondea para redondear debemos usar round
+
+        $this->valorventa =  Temporal::where('company_id', $this->company_id) //es el total sin inc igv ejemplo 100x2= 200 soles
+        ->where('employee_id', auth()->user()->employee->id)
+        ->whereIn('tipafeigv', ['10', '20', '30', '40'])
+        ->sum('mtovalorventa');
+
+        $this->subtotal = number_format($this->valorventa + $this->totalimpuestos, 4);
+
+        //$this->mtoimpventa = floor($this->subtotall * 10) / 10;
+        $this->mtoimpventa = $this->subtotall;
+
+        $this->redondeo = $this->subtotall - $this->mtoimpventa;
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
 
 
     }
@@ -279,16 +399,23 @@ class ComprobanteCreate extends Component
 
         $this->legends[] = [
             'code' => '1000',
+<<<<<<< HEAD
             'value' => $formatter->toInvoice($this->subtotall, 4)
         ];
 
 
 
+=======
+            'value' => $formatter->toInvoice($this->mtoimpventa, 4)
+        ];
+
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         /* if (collect($this->invoice['details'])->whereNotIn('tipAfeIgv', ['10', '20', '30', '40'])->count()) {
             $legends[] = [
                 'code' => '1002',
                 'value' => 'TRANSFERENCIA GRATUITA DE UN BIEN Y/O SERVICIO PRESTADO GRATUITAMENTE'
             ];
+<<<<<<< HEAD
         } */
 
         if ($this->tipodeoperacion_codigo == '1001' &&  $this->subtotall > $this->company->detraccion) {
@@ -300,6 +427,19 @@ class ComprobanteCreate extends Component
 
         // $this->invoice['legends'] = $legends;
         return $this->legends;
+=======
+        }
+
+        if ($this->invoice['tipoOperacion'] == '1001') {
+            $legends[] = [
+                'code' => '2006',
+                'value' => 'Operación sujeta a detracción'
+            ];
+        } */
+
+       // $this->invoice['legends'] = $legends;
+       return $this->legends;
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
     }
 
 
@@ -320,7 +460,11 @@ class ComprobanteCreate extends Component
         //$this->totalenletras = $formatter->toInvoice($this->mtoimpventa, 2);
         $this->totalenletras = $formatter->toInvoice($this->total, 2);
 
+<<<<<<< HEAD
         return $this->total; //esto controla la vista del carrito
+=======
+        return $this->total;//esto controla la vista del carrito
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         //return $this->totalenletras;
     }
 
@@ -329,10 +473,18 @@ class ComprobanteCreate extends Component
     // actualizar cantidad item en carrito
     public function updateQty($id, $saleprice, $quantity = 1, $mtovalorunitario)
     {
+<<<<<<< HEAD
         if ($quantity <= 0) {
             $this->removeItem($id);
         } else {
             $this->updateQuantity($id, $saleprice, $quantity, $mtovalorunitario);
+=======
+        if ($quantity <= 0){
+            $this->removeItem($id);}
+        else{
+            $this->updateQuantity($id, $saleprice, $quantity, $mtovalorunitario);
+
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         }
     }
 
@@ -341,7 +493,10 @@ class ComprobanteCreate extends Component
     public function updateQuantity($id, $saleprice, $quantity, $mtovalorunitario)
     {
         $subtotal = $quantity * $saleprice;
+<<<<<<< HEAD
         //$this->subtotall = $quantity * $saleprice;
+=======
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         ////////////////////////////////////////
         //// debo actualizar en temporal  las variables que usan cantidades /////
         /////////////////////////////////////
@@ -351,11 +506,19 @@ class ComprobanteCreate extends Component
             $productelegido->update([
                 'quantity' => $quantity,
                 'subtotal' => $subtotal,
+<<<<<<< HEAD
                 'mtobaseigv' => $quantity * $mtovalorunitario, //cantidad * precio sin igv
                 'igv' => $subtotal - ($quantity * $mtovalorunitario), //es 118 -100= 18soles
                 'icbper' => $quantity * $this->factoricbper,
                 'totalimpuestos' => $quantity * $this->factoricbper + ($subtotal - ($quantity * $mtovalorunitario)),
                 'mtovalorventa' => $mtovalorunitario * $quantity, //subtotal sin inc IGV ejemplo 100 x 2 = 200
+=======
+                'mtobaseigv' => $quantity*$mtovalorunitario,//cantidad * precio sin igv
+                'igv' => $subtotal - ($quantity*$mtovalorunitario),//es 118 -100= 18soles
+                'icbper' => $quantity * $this->factoricbper,
+                'totalimpuestos' => $quantity * $this->factoricbper + ($subtotal - ($quantity*$mtovalorunitario)),
+                'mtovalorventa' => $mtovalorunitario * $quantity,//subtotal sin inc IGV ejemplo 100 x 2 = 200
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
 
             ]);
         }
@@ -367,7 +530,11 @@ class ComprobanteCreate extends Component
 
 
 
+<<<<<<< HEAD
     public function delete(Temporal $temporal) //elimina todo
+=======
+    public function delete(Temporal $temporal)//elimina todo
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
     {
         //$this->authorize('update', $brand);
 
@@ -392,11 +559,19 @@ class ComprobanteCreate extends Component
     public function updatePrice($id, $saleprice, $quantity)
     {
         $subtotal = $quantity * $saleprice;
+<<<<<<< HEAD
         $mtovalorunitario = $saleprice / (1 + ($this->igv * 0.01)); //actualizamos//precio de producto sin inc igv ejemplo 100
         $mtobaseigv = $quantity * $mtovalorunitario; //cantidad * precio sin igv
         $igv = $subtotal - ($quantity * $mtovalorunitario); //es 118 -100= 18soles
         $totalimpuestos = $quantity * $this->factoricbper + ($subtotal - ($quantity * $mtovalorunitario));
         $mtovalorventa = $mtovalorunitario * $quantity; //subtotal sin inc IGV ejemplo 100 x 2 = 200
+=======
+        $mtovalorunitario = $saleprice/(1 + ($this->igv*0.01));//actualizamos//precio de producto sin inc igv ejemplo 100
+        $mtobaseigv = $quantity*$mtovalorunitario;//cantidad * precio sin igv
+        $igv = $subtotal - ($quantity*$mtovalorunitario);//es 118 -100= 18soles
+        $totalimpuestos = $quantity * $this->factoricbper + ($subtotal - ($quantity*$mtovalorunitario));
+        $mtovalorventa = $mtovalorunitario * $quantity;//subtotal sin inc IGV ejemplo 100 x 2 = 200
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
 
         //se cambio el precio, cambiara precio sin igv, el igv y el subtotal
         if ($saleprice > 0 and $quantity > 0) {
@@ -408,7 +583,11 @@ class ComprobanteCreate extends Component
                 'mtobaseigv' => $mtobaseigv,
                 'igv' => $igv,
                 'totalimpuestos' => $totalimpuestos,
+<<<<<<< HEAD
                 'mtovalorventa' => $mtovalorventa, //subtotal sin inc IGV ejemplo 100 x 2 = 200
+=======
+                'mtovalorventa' => $mtovalorventa,//subtotal sin inc IGV ejemplo 100 x 2 = 200
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
             ]);
         }
 
@@ -447,7 +626,11 @@ class ComprobanteCreate extends Component
         // Encuentra el tipo de comprobante seleccionado
         $selectedTipoComprobante = $tipocomprobantes->where('id', $value)->first();
         // Actualiza el valor de tipoDoc en tu array de invoice
+<<<<<<< HEAD
         ////$this->tipodocumento_id = $selectedTipoComprobante->id; //aqui da el valor de tipocomprobante factura , boleta para enviara a sunat
+=======
+        $this->tipodocumento_id = $selectedTipoComprobante->id;//aqui da el valor de tipocomprobante factura , boleta para enviara a sunat
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         //dd($selectedTipoComprobante->codigo);
         // $this->moneda = Currency::where('id', $value);
         //$this->serie = Currency::where('id', $value)->value('abbreviation');
@@ -533,11 +716,36 @@ class ComprobanteCreate extends Component
 
 
 
+<<<<<<< HEAD
+=======
+
+
+    public function searchRuc(){
+
+        $sunat = new \jossmp\sunat\ruc([
+            'representantes_legales' 	=> false,
+            'cantidad_trabajadores' 	=> false,
+            'establecimientos' 			=> false,
+            'deuda' 					=> false,
+        ]);
+    
+        $query = $sunat->consulta($this->ruc);
+
+        if ($query->success) {
+
+            $this->razonsocial = $query->result->razon_social;
+            
+
+        }
+    }
+
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
     //guardamos el comprobante
     public function save()
     {
         //validaremos y guardaremos al cliente
 
+<<<<<<< HEAD
 
 
 
@@ -566,6 +774,9 @@ class ComprobanteCreate extends Component
         }
 
 
+=======
+        $this->validate();
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         //el cliente esta en la tabla customer
         //buscamos el cliente y el tipo documento ruc, dni, carnet de extranjeria, etc
         ////$customer = Customer::find($this->customer_id);//se va crear el cliente
@@ -608,6 +819,10 @@ class ComprobanteCreate extends Component
         //factura. boleta
         $this->local_tipocomprobante_id = Local_tipocomprobante::where('local_id', $this->local_id)->where('tipocomprobante_id', $this->tipocomprobante_id)->value('id');
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         $this->serienumero = $this->serie . "-" . $this->numero;
         //dd($this->serienumero);
 
@@ -628,6 +843,7 @@ class ComprobanteCreate extends Component
             $province_id = NULL;
         }
 
+<<<<<<< HEAD
         //buscamos en la tabla distrito
         if($this->distrito){
             $distrito = ucfirst(strtolower($this->distrito));
@@ -681,12 +897,18 @@ class ComprobanteCreate extends Component
 
         $this->validate();
 
+=======
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
         //guadamos la tabla comprobantes
         $comprobante = Comprobante::create([
             //'customer_id' => $this->customer_id,
             'customer_id' => $customer->id,
             'local_id' => $this->local_id,
+<<<<<<< HEAD
             'tipocomprobante_id' => $this->tipocomprobante_id, //factura boleta
+=======
+            'tipocomprobante_id' => $this->tipocomprobante_id,//factura boleta
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
             'local_tipocomprobante_id' => $this->local_tipocomprobante_id,
             'company_id' => auth()->user()->employee->company->id, //encontramos la company actual osea la compania del usuario logueado
             'employee_id' => auth()->user()->employee->id,
@@ -695,8 +917,13 @@ class ComprobanteCreate extends Component
             'tipodocumento_id' => $this->tipodocumento_id, //ruc, dni
             'fechaemision' =>  $this->fechaemision,
             'fechavencimiento' =>  $this->fechavencimiento,
+<<<<<<< HEAD
             'paymenttype_id' => $this->paymenttype_id, //contado, credito
             'currency_id' => $this->currency_id, //PEN, USD
+=======
+            'paymenttype_id' => $this->paymenttype_id,//contado, credito
+            'currency_id' => $this->currency_id,//PEN, USD
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
             'mtoopergravadas' => $this->mtoopergravadas,
             'mtooperexoneradas' => $this->mtooperexoneradas,
             'mtooperinafectas' => $this->mtooperinafectas,
@@ -730,7 +957,11 @@ class ComprobanteCreate extends Component
             'company_id' => auth()->user()->employee->company->id,
             'paymenttype_id' => $this->paymenttype_id,
             'currency_id' => $this->currency_id,
+<<<<<<< HEAD
             'tipodecambio_id' => 1, //1 es un codigo de la tabla tipo de cambios es el id
+=======
+            'tipodecambio_id' => 1,//1 es un codigo de la tabla tipo de cambios es el id
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
 
             //guardaremos campos para facturacion electronica
 
@@ -853,6 +1084,10 @@ class ComprobanteCreate extends Component
 
 
 
+<<<<<<< HEAD
         return view('livewire.admin.comprobante-create', compact('customers', 'currencies', 'tipocomprobantes', 'cart', 'tipodocumentos', 'tipodeoperacions'));
+=======
+        return view('livewire.admin.comprobante-create', compact('customers', 'currencies', 'tipocomprobantes', 'cart', 'tipodocumentos'));
+>>>>>>> 530b2f79ee27d57ab04a035026d813a135fe0b96
     }
 }
