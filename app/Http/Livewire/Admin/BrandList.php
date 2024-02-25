@@ -240,7 +240,7 @@ class BrandList extends Component
 
         //convierto brand.name en mayuscula
         $this->brand->name = strtoupper($this->brand->name);
-        $this->brand->comany_id = auth()->user()->employee->company->id;
+        $this->brand->company_id = auth()->user()->employee->company->id;
         //es otra forma de actualizar
         $this->brand->save();
 

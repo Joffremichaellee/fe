@@ -325,14 +325,14 @@
             </div>
 
 
-            {{-- <x-slot name="footer">
+          <x-slot name="footer">
 
                 <h2 class="text-xl font-semibold leading-tight text-gray-600">
                     Pie
                 </h2>
 
 
-            </x-slot> --}}
+            </x-slot>
 
 
 

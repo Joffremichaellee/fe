@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tipodocumentos', function (Blueprint $table) {
-            $table->id();
+        Schema::create('provinces', function (Blueprint $table) {
+            $table->string('id');
+            $table->primary('id');
+            $table->string('name')->nullable();
+            $table->string('department_id');
 
-            $table->string('name')->unique();
-            $table->string('codigo')->unique();
-            $table->string('abbreviation')->unique();
-            $table->boolean('state')->default(true);
-
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipodocumentos');
+        Schema::dropIfExists('provinces');
     }
 };

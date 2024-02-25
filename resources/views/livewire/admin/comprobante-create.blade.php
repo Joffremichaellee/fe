@@ -19,7 +19,7 @@
                         {{-- <div class="py-2 mb-1" wire:ignore> --}}
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-6">
 
-                            <div class="mb-4 mr-4 ">
+                            <div class="mr-4 ">
                                 {{-- <label>Proveedores </label> --}}
                                 <x-jet-label value="Tipo Documento" />
                                 {{-- select2 --}}
@@ -36,10 +36,91 @@
                                 <x-jet-input-error for="tipodocumento_id" />
                             </div>
 
+
+
+                            <div class="flex items-center col-span-2 mr-4">
+
+                                <div class="flex-1 mr-1">
+                                    <x-jet-label value="Numero" />
+                                    <x-jet-input wire:model.defer="ruc" type="text" placeholder="RUC" class="w-full h-10 max-w-md uppercase" />
+                                    <x-jet-input-error for="ruc" />
+                                </div>
+
+                                <div>
+                                    <x-jet-label value="Buscar" />
+                                    <x-jet-secondary-button class="h-10 ml-1 mr-1" wire:click="searchRuc">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                        </svg>
+                                    </x-jet-secondary-button>
+                                </div>
+
+                            </div>
+
+                            <div class="flex-1 col-span-3 mb-1 mr-1">
+                                <x-jet-label value="Razón Social" />
+                                <x-jet-input wire:model.defer="razon_social" type="text" placeholder="Razón Social" class="w-full h-10 max-w-md uppercase" />
+                                <x-jet-input-error for="razon_social" />
+                            </div>
+
+                            <div class="flex-1 mb-1 mr-4">
+                                <x-jet-label value="Nombre Comercial" />
+                                <x-jet-input wire:model.defer="nombre_comercial" type="text" placeholder="Nom Comercial" class="w-full h-10 max-w-md uppercase" />
+                                <x-jet-input-error for="nombre_comercial" />
+                            </div>
+
+                            <div class="flex-1 col-span-2 mb-4 mr-4">
+                                <x-jet-label value="Dirección" />
+                                <x-jet-input wire:model.defer="direccion" type="text" placeholder="Dirección" class="w-full h-10 max-w-md uppercase" />
+                                <x-jet-input-error for="direccion" />
+                            </div>
+
+                            <div class="flex-1 mb-4 mr-4">
+                                <x-jet-label value="Departamento" />
+                                <x-jet-input wire:model.defer="departamento" type="text" placeholder="Departamento" class="w-full h-10 max-w-md uppercase" />
+                                <x-jet-input-error for="Departamento" />
+                            </div>
+
+                            <div class="flex-1 mb-4 mr-4">
+                                <x-jet-label value="Provincia" />
+                                <x-jet-input wire:model.defer="provincia" type="text" placeholder="Provincia" class="w-full h-10 max-w-md uppercase" />
+                                <x-jet-input-error for="provincia" />
+                            </div>
+
+                            <div class="flex-1 mb-4 mr-4">
+                                <x-jet-label value="Distrito" />
+                                <x-jet-input wire:model.defer="distrito" type="text" placeholder="Distrito" class="w-full h-10 max-w-md uppercase" />
+                                <x-jet-input-error for="distrito" />
+                            </div>
+                            <div class="flex-1 col-span-6 mb-4 mr-4">
+                                <hr>
+                            </div>
+
                             <div class="mb-4 mr-4 ">
                                 {{-- <label>Proveedores </label> --}}
-                                <x-jet-label value="Cliente" />
+                                <x-jet-label value="Tipo de Operación" />
                                 {{-- select2 --}}
+                                <select wire:model="tipodeoperacion_id"
+                                    class="h-10 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
+                                    data-placeholder="Selecccione" style="width:100%">
+                                    <option value="" selected disabled>Seleccione</option>
+                                    @foreach ($tipodeoperacions as $tipodeoperacion)
+                                        <option value="{{ $tipodeoperacion->id }}">{{ $tipodeoperacion->descripcion }}
+                                        </option>
+                                    @endforeach
+
+                                </select>
+                                <x-jet-input-error for="tipodeoperacion_id" />
+                            </div>
+
+
+
+
+
+                            {{-- <div class="mb-4 mr-4 ">
+
+                                <x-jet-label value="Cliente" />
+
                                 <select wire:model="customer_id"
                                     class="h-10 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
                                     data-placeholder="Selecccione un Proveedor" style="width:100%">
@@ -51,7 +132,7 @@
 
                                 </select>
                                 <x-jet-input-error for="customer_id" />
-                            </div>
+                            </div> --}}
 
 
                             <div class="mb-4 mr-4 ">
@@ -114,8 +195,10 @@
 
                             <div class="mb-4 mr-4">
                                 <x-jet-label value="Fecha de Emisión" />
-                                <x-jet-input type="date" max="{{ date('Y-m-d') }}" min="{{ date('Y-m-d', strtotime('-3 days')) }}" wire:model="fechaemision" value="{{ old('fechaemision') }}"
-                                    class="w-full h-10" placeholder="fecha de emisión" />
+                                <x-jet-input type="date" max="{{ date('Y-m-d') }}"
+                                    min="{{ date('Y-m-d', strtotime('-3 days')) }}" wire:model="fechaemision"
+                                    value="{{ old('fechaemision') }}" class="w-full h-10"
+                                    placeholder="fecha de emisión" />
                                 <x-jet-input-error for="fechaemision" />
                             </div>
 
@@ -130,9 +213,9 @@
 
                             <div class="mb-4 mr-4">
                                 <x-jet-label value="Fecha de Vencimiento:" />
-                                <x-jet-input type="date" min="{{ date('Y-m-d', strtotime('-3 days')) }}"  wire:model="fechavencimiento"
-                                    value="{{ old('fechavencimiento') }}" class="w-full h-10"
-                                    placeholder="fecha de pago" />
+                                <x-jet-input type="date" min="{{ date('Y-m-d', strtotime('-3 days')) }}"
+                                    wire:model="fechavencimiento" value="{{ old('fechavencimiento') }}"
+                                    class="w-full h-10" placeholder="fecha de pago" />
                                 <x-jet-input-error for="fechavencimiento" />
 
                             </div>
@@ -162,6 +245,14 @@
 
 
                             </div>
+
+                            {{-- <div class="mb-4 ml-3 mr-4">
+                                <x-jet-label value="Sujeto a Detracción:" />
+
+                                <x-jet-input type="checkbox" wire:model="detraccion" class="mx-2" />
+
+
+                            </div> --}}
 
 
                         </div>
@@ -271,7 +362,7 @@
                                                                             wire:change="updatePrice('{{ $item->id }}', $('#p' + '{{ $item->id }}').val(), $('#r' + '{{ $item->id }}').val())"
                                                                             style="font-size: 1rem!important"
                                                                             class="w-20 text-center form-control"
-                                                                            value="{{ number_format($item->saleprice, 2) }}">
+                                                                            value="{{ number_format($item->saleprice, 4) }}">
                                                                     </div>
                                                                 </td>
 
@@ -279,7 +370,7 @@
                                                                     <div class="w-20 text-lg text-center">
                                                                         <input type="number"
                                                                             id="r{{ $item->id }}"
-                                                                            wire:change="updateQty('{{ $item->id }}', $('#p' + '{{ $item->id }}').val(), $('#r' + '{{ $item->id }}').val() )"
+                                                                            wire:change="updateQty('{{ $item->id }}', $('#p' + '{{ $item->id }}').val(), $('#r' + '{{ $item->id }}').val(), '{{ $item->mtovalorunitario }}')"
                                                                             style="font-size: 1rem!important"
                                                                             class="w-20 text-center form-control"
                                                                             value="{{ $item->quantity }}">
@@ -289,8 +380,8 @@
 
 
                                                                 <td class="p-2 whitespace-nowrap">
-                                                                    <div class="text-lg text-center">
-                                                                        {{ number_format($item->saleprice * $item->quantity, 2) }}
+                                                                    <div class="text-lg text-right">
+                                                                        {{ number_format($item->saleprice * $item->quantity, 4) }}
                                                                     </div>
                                                                 </td>
 
@@ -305,34 +396,99 @@
 
                                                             </tr>
                                                         @endforeach
-
-
-                                                    </tbody>
-
-                                                    <tfoot>
                                                         <tr>
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>
-                                                            <td>{{ $invoice['legends'][0]['value'] }}</td>
+                                                            <td></td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                    SUB-TOTAL
+                                                                </div>
+                                                            </td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                    {{ $valorventa }}
+                                                                </div>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                    ICBPER
+                                                                </div>
+                                                            </td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                    {{ $icbper }}
+                                                                </div>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                    IGV
+                                                                </div>
+                                                            </td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                    {{ $mtoigv }}
+                                                                </div>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                    </tbody>
+
+                                                    <tfoot>
+
+                                                        <tr>
+
+                                                            {{-- <td>{{ $valorventa }}</td>
+                                                            <td>{{ $totalimpuestos }}</td>
+                                                            <td>{{ $subtotall }}</td> --}}
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>{{ $totalenletras }}</td>
                                                             <td class="text-right">Total: {{ $moneda }}</td>
-                                                            <td class="text-center"> {{ $total }} </td>
+                                                            <td class="p-2 whitespace-nowrap">
+                                                                <div class="text-lg text-right">
+                                                                    {{ $subtotall }}
+                                                                </div>
+                                                            </td>
+
                                                             <td></td>
                                                         </tr>
                                                     </tfoot>
 
                                                 </table>
-                                                <div>
-
-                                                </div>
+                                                {{--  <div>
+                                                    mtoigv = {{ $mtoigv }} /
+                                                    mtoigvgratuitas = {{ $mtoigvgratuitas }}  /
+                                                    icbper= {{ $icbper }}
+                                                    totalimpuestos={{ $totalimpuestos }}
+                                                    valorventa={{ $valorventa }}
+                                                </div> --}}
 
                                             </div>
                                         </div>
                                     </div>
-
                                 @else
                                     <h5 class="text-center text-muted">Agrega productos para la venta</h5>
                                 @endif
+
+
                             </div>
                         </section>
 

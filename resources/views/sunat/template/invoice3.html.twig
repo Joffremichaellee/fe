@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        body {
+            max-width: 8cm;
+            background-repeat: no-repeat;
+            background-position: center center;
+            text-align: center;
+            margin: 0;
+            font-family: Verdana, monospace;
+        }
+
+        .tabla_borde {
+            border: 1px solid #666;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        table td {
+            padding: 6px;
+            border-top: 1px solid #e7eaec;
+        }
+
+        .white-bg {
+            background-color: #fff;
+        }
+
+        hr {
+            height: 0;
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 20px 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body class="white-bg">
+    <div class="tabla_borde">
+        <img src="{{ params.system.logo|image_b64 }}" style="text-align: center" border="0">
+    </div>
+
+    <div class="tabla_borde">
+        <table>
+            <tbody>
+                <tr>
+                    <td><strong>Razón Social:</strong></td>
+                    <td>{{ doc.company.razonSocial }}</td>
+                </tr>
+                <tr>
+                    <td><strong>R.U.C.:</strong></td>
+                    <td>{{ doc.company.ruc }}</td>
+                </tr>
+                <!-- Agrega más datos de la empresa aquí -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="tabla_borde">
+        <table>
+            <tbody>
+                <tr>
+                    <td><strong>Razón Social del Cliente:</strong></td>
+                    <td>{{ doc.client.rznSocial }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Tipo de Documento del Cliente:</strong></td>
+                    <td>{{ doc.client.tipoDoc|catalog('06') }}</td>
+                </tr>
+                <!-- Agrega más datos del cliente aquí -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="tabla_borde">
+        <table>
+            <thead>
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Valor Unitario</th>
+                    <th>Valor Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for det in doc.details %}
+                <tr>
+                    <td>{{ det.cantidad|n_format }} {{ det.unidad }}</td>
+                    <td>{{ det.codProducto }}</td>
+                    <td>{{ det.descripcion }}</td>
+                    <td>{{ doc.tipoMoneda|catalog('02') }} {{ det.mtoValorUnitario|n_format }}</td>
+                    <td>{{ doc.tipoMoneda|catalog('02') }} {{ det.mtoValorVenta|n_format }}</td>
+                </tr>
+                {% endfor %}
+                <!-- Agrega más detalles de productos aquí -->
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
+    <div>
+        <img src="{{ qrCode(doc)|image_b64('svg+xml') }}" alt="Qr Image">
+    </div>
+</body>
+</html>

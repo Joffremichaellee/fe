@@ -115,12 +115,13 @@ class UserSeeder extends Seeder
         $company = Company::create([
             'ruc' => '20447393302',
             'razonsocial' => 'TICOM',
-            'ubigeo' => "10012",
+            'ubigeo' => "150101",
             'direccion' => 'Av. Peru 1255',
             'currency_id' => 1,
             'soluser' => "MODDATOS",
             'solpass' => "MODDATOS",
             'ublversion' => "2.1",
+            'detraccion' => 700,
             'certificate_path' => "certificates/certificate_1.pem",
             'certificado' => "-----BEGIN PRIVATE KEY-----
             MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDUHbPExymJyOWE

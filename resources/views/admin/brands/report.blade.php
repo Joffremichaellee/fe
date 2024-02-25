@@ -49,7 +49,7 @@
     </style>
 </head>
 
-<body>
+<body style="width: 7.5cm;">
     <img src="{{ public_path() . '/images/ticom.jpg' }}" width="150" height="50" alt="">
     <h1>Listado de Marcas</h1>
     <table>
@@ -88,6 +88,7 @@
                         @endif
                     </td>
                 </tr>
+
             @endforeach
         </tbody>
     </table>

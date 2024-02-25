@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tipodocumentos', function (Blueprint $table) {
-            $table->id();
-
-            $table->string('name')->unique();
-            $table->string('codigo')->unique();
-            $table->string('abbreviation')->unique();
-            $table->boolean('state')->default(true);
-
+        Schema::create('departments', function (Blueprint $table) {
+            $table->string('id');
+            $table->primary('id');
+            //$table->string('idd')->nullable();
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipodocumentos');
+        Schema::dropIfExists('departments');
     }
 };

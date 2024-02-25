@@ -35,5 +35,7 @@ class AppServiceProvider extends ServiceProvider
                 ->where('company_id', $company_id)
                 ->exists();
         });
+
+
     }
 }

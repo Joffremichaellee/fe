@@ -46,7 +46,7 @@ class BrandCreate extends Component
         $rules = $this->rules;
 
         // Agrega la regla única condicional para la combinación de name y company_id
-        $rules['name'] .= '|unique_brand';
+        $rules['name'] .= '|unique_brand';//esta en app/Providers/AppServiceProvider
 
         return $rules;
     }

@@ -21,9 +21,13 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->text('description')->nullable();
 
-            $table->double('purchaseprice', 8, 2)->nullable();//precio-compra
-            $table->double('saleprice', 8, 2)->nullable();//precio venta
-            $table->double('salepricemin', 8, 2)->nullable();//precio venta minimo
+            $table->double('purchaseprice', 10, 4)->nullable();//precio-compra con igv
+            $table->double('saleprice', 10, 4)->nullable();//precio venta con igv
+            $table->double('salepricemin', 10, 4)->nullable();//precio venta minimo con igv
+
+            $table->double('mtovalorgratuito', 10, 4)->default(0.00);
+            $table->double('mtovalorunitario', 10, 4)->nullable();//precio sin igv
+            //$table->double('mtopreciounitario', 10, 4)->nullable();//precio con igv  es el saleprice por eso lo comento
 
             $table->unsignedBigInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
@@ -45,10 +49,6 @@ return new class extends Migration
 
             $table->unsignedBigInteger('tipoafectacion_id')->nullable();
             $table->foreign('tipoafectacion_id')->references('id')->on('tipoafectacions')->onDelete('cascade');
-
-            $table->double('mtovalorgratuito', 8, 2)->default(0.00);
-            $table->double('mtovalorunitario', 8, 2)->nullable();
-            $table->double('mtopreciounitario', 8, 2)->nullable();
 
             $table->boolean('esbolsa')->default(false);
             $table->boolean('detraccion')->default(false);

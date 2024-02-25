@@ -31,6 +31,7 @@ return new class extends Migration
             $table->boolean('production')->default(0);//si no
             $table->boolean('state')->default(1);
             $table->string('ublversion')->nullable();
+            $table->double('detraccion', 10, 4)->nullable();
             //$table->foreignId('currency_id')->constrained();//moneda por defecto para los comprobantes
             $table->unsignedBigInteger('currency_id')->nullable();
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');

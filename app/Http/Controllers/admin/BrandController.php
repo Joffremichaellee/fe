@@ -31,10 +31,35 @@ class BrandController extends Controller
 
     public function pdfReport(){
         //$brands = Brand::all();
-        $brands = Brand::where('company_id', auth()->user()->employee->company->id)->get();
-        $pdf = Pdf::loadView('admin.brands.report', compact('brands'));
+        ///$brands = Brand::where('company_id', auth()->user()->employee->company->id)->get();
+        //$pdf = Pdf::loadView('admin.brands.report', compact('brands'));
+        ///$pdf = Pdf::setPaper([0,0,800,300],'landscape')->loadView('admin.brands.report', compact('brands'));
         //return $pdf->download('brand.pdf');//descarga
-        return $pdf->stream('brand_report.pdf');//ve en linea
+        ///return $pdf->stream('brand_report.pdf');//ve en linea
+
+        $brands = Brand::where('company_id', auth()->user()->employee->company->id)->get();
+        //($brands->count());
+
+        // Contenido del ticket o comprobante (este es solo un ejemplo)
+        $ticketContent = $brands->pluck('name')->implode("\n");
+
+        //dd($brands);
+
+        // Calcula la altura del contenido del ticket en puntos (1 pulgada = 72 puntos)
+        $alturaContenido = 100 * $brands->count();
+
+        // Establece la altura mínima que deseas para el documento PDF
+        $alturaMinima = 300; // en puntos
+
+        // Establece la altura del papel en función del contenido del ticket, asegurándote de que no sea menor que la altura mínima
+        $alturaPapel = max($alturaContenido, $alturaMinima);
+
+        // Genera el PDF con el tamaño de papel ajustado
+        $pdf = PDF::setPaper([0, 0, $alturaPapel, 280], 'landscape')->loadView('admin.brands.report', compact('brands'));
+
+        // Ve el PDF en línea
+        return $pdf->stream('brand_report.pdf');
+
 
     }
 

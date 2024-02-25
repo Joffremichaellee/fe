@@ -15,9 +15,28 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('tipodocumento_id')->nullable(); //dni ruc
+            $table->foreign('tipodocumento_id')->references('id')->on('tipodocumentos')->onDelete('cascade');
+
             $table->string('numdoc')->unique();
             $table->string('nomrazonsocial')->unique();
+            $table->string('nombrecomercial')->nullable();
             $table->string('address')->nullable();
+
+            $table->string('department_id')->nullable();
+            $table->foreign('department_id')->references('id')->on('departments');
+
+            $table->string('province_id')->nullable();
+            $table->foreign('province_id')->references('id')->on('provinces');
+
+            $table->string('district_id')->nullable();
+            $table->foreign('district_id')->references('id')->on('districts');
+
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+
+
             $table->string('phone')->nullable();
             $table->string('movil')->nullable();
             $table->string('email')->nullable();
@@ -27,8 +46,10 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->unsignedBigInteger('tipodocumento_id')->nullable();//dni ruc
-            $table->foreign('tipodocumento_id')->references('id')->on('tipodocumentos')->onDelete('cascade');
+
+            // Agrega la restricción única en la combinación de rucodni con numdoc y company_id
+            $table->unique(['numdoc', 'company_id']);
+
 
             $table->timestamps();
         });

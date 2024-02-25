@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('fechaemision')->nullable();
             $table->timestamp('fechavencimiento')->nullable();
             //$table->string('formadepago');
-            $table->double('total', 8, 2)->nullable();//precio venta
+            $table->double('total', 10, 4)->nullable();//precio venta
 
             $table->unsignedBigInteger('comprobante_id')->nullable();
             $table->foreign('comprobante_id')->references('id')->on('comprobantes')->onDelete('cascade');
@@ -43,6 +43,19 @@ return new class extends Migration
 
             /* $table->unsignedBigInteger('sale_id')->nullable();
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade'); */
+
+            $table->string('send_xml')->nullable();
+            $table->string('sunat_success')->nullable();
+            $table->text('sunat_error')->nullable();
+            $table->string('hash')->nullable();
+            $table->string('xml_path')->nullable();
+            $table->string('pdf_path')->nullable();
+            $table->string('sunat_cdr_path')->nullable();
+            $table->text('cdr_code')->nullable();
+            $table->text('cdr_notes')->nullable();
+            $table->text('cdr_description')->nullable();
+
+
 
             $table->timestamps();
         });

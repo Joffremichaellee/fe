@@ -14,15 +14,15 @@ class CustomersTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('customers')->delete();
-        
+
         \DB::table('customers')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
-                'numdoc' => '20447393303',
+                'numdoc' => '10133423',
                 'nomrazonsocial' => 'ticom perux',
                 'address' => 'av petit thouars 1255',
                 'phone' => '266250',
@@ -35,10 +35,10 @@ class CustomersTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
-                'numdoc' => '20447859632',
+                'numdoc' => '10133420',
                 'nomrazonsocial' => 'btecperu',
                 'address' => 'av raranibar 122',
                 'phone' => '2662540',
@@ -52,7 +52,7 @@ class CustomersTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

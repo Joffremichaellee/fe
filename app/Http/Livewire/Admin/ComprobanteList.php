@@ -60,11 +60,13 @@ class ComprobanteList extends Component
     public function render()
     {
         if ($this->readyToLoad) {
+            $company_id = auth()->user()->employee->company->id;
             // with('customer', 'local') para la carga ansiosa n+1
             $comprobantes = Comprobante::with('customer', 'local')->addSelect([
                 'nomrazonsocial' => Customer::select('nomrazonsocial')
                     ->whereColumn('id', 'comprobantes.customer_id')
-            ])->where(function ($query) {
+            ])->where('company_id', $company_id)
+              ->where(function ($query) {
                 $query->whereHas('boleta', function (Builder $boletaQuery) {
                     $boletaQuery->where('serienumero', 'like', '%' . $this->search . '%');
                                 //->orWhere('numero', 'like', '%' . $this->search . '%');
@@ -72,6 +74,7 @@ class ComprobanteList extends Component
                     $customerQuery->where('nomrazonsocial', 'like', '%' . $this->search . '%');
                 });
             })->orderBy($this->sort, $this->direction)->paginate($this->cant);
+
         } else {
             $comprobantes = [];
         }

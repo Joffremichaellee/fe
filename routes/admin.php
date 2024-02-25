@@ -41,6 +41,7 @@ use App\Http\Controllers\admin\ProductatributeController;
 use App\Http\Controllers\admin\UsersPermissionsController;
 use App\Http\Livewire\Admin\LocalproductatributestockList;
 use App\Http\Livewire\Admin\LocalproductatributestocktotalesList;
+use App\Http\Controllers\admin\BoletaReport;
 
 
 
@@ -59,7 +60,7 @@ Route::get('/locales', LocalList::class)->name('local.list');
 Route::get('/local/create', LocalCreated::class)->name('local.create');
 Route::get('/local/edit/{local}', LocalEdit::class)->name('local.edit');
 //Route::get('local/create', [LocalController::class, 'create'])->name('admin.local.create');
-
+Route::get('/boletaprueba', [BoletaReport::class,'generarPDF'])->name('admin.boletaprueba');
 
 
 //Route::get('/empezarinventarioinicial', InventoryList::class)->name('inventory.list');

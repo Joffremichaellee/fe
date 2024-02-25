@@ -39,6 +39,9 @@ class DatabaseSeeder extends Seeder
 
 
 
+        $this->call(DepartmentSeeder::class);
+        $this->call(ProvinceSeeder::class);
+        $this->call(DistrictSeeder::class);
         $this->call(ConfigurationSeeder::class);
 
         $this->call(UmSeeder::class);

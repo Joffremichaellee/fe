@@ -5,6 +5,8 @@ namespace App\Services;
 use DateTime;
 use Greenter\See; //importar
 use Greenter\Model\Sale\Note;
+use Greenter\Report\XmlUtils;
+use Greenter\Report\PdfReport;
 use Greenter\Model\Sale\Legend;
 use Greenter\Report\HtmlReport;
 use Greenter\Model\Sale\Invoice;
@@ -20,24 +22,27 @@ use Greenter\Model\Despatch\Direction;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Company as ModelsCompany;
 use Greenter\Ws\Services\SunatEndpoints;
+use Greenter\XMLSecLibs\Sunat\SignedXml;
 use Greenter\Model\Despatch\Transportist;
 use Greenter\Model\Despatch\DespatchDetail;
 use Greenter\Model\Sale\FormaPagos\FormaPagoContado;
 use Greenter\Report\Resolver\DefaultTemplateResolver;
-use Greenter\Report\XmlUtils;
+
 
 class SunatService
 {
-    public $invoice, $company;
+    public $comprobante, $company, $temporals, $boleta;
     public $see;
     public $voucher;
     public $result;
 
 
-    public function __construct($invoice, $company)
+    public function __construct($comprobante, $company, $temporals, $boleta)
     {
-        $this->invoice = $invoice;
+        $this->comprobante = $comprobante;
         $this->company = $company;
+        $this->temporals = $temporals;
+        $this->boleta = $boleta;
     }
 
     public function getSee()
@@ -60,36 +65,36 @@ class SunatService
     {
         $this->voucher = (new Invoice())
             ->setUblVersion('2.1')
-            ->setTipoOperacion($this->invoice['tipoOperacion']) // Venta - Catalog. 51
+            ->setTipoOperacion($this->comprobante->tipodeoperacion->codigo) // Venta - Catalog. 51
+            ->setTipoDoc($this->comprobante->tipocomprobante->codigo) // Factura - Catalog. 01, factura 01, boleta 03
 
-            ->setTipoDoc($this->invoice['tipoDoc']) // Factura - Catalog. 01
-            ->setSerie($this->invoice['serie'])
-            ->setCorrelativo($this->invoice['correlativo']) // Zona horaria: Lima
+            ->setSerie($this->boleta->serie)
+            ->setCorrelativo($this->boleta->numero) // Zona horaria: Lima
             //->setFechaEmision($this->invoice['fechaEmision']) // Zona horaria: Lima
-            ->setFechaEmision(new \DateTime($this->invoice['fechaEmision']))
+            ->setFechaEmision(new \DateTime($this->boleta->fechaEmision))
             ->setFormaPago(new FormaPagoContado()) // FormaPago: Contado
-            ->setTipoMoneda($this->invoice['tipoMoneda']) // Sol - Catalog. 02
+            ->setTipoMoneda($this->boleta->currency->name) // Sol - Catalog. 02
             ->setCompany($this->getCompany())
             ->setClient($this->getClient())
 
             //MtoOper
-            ->setMtoOperGravadas($this->invoice['mtoOperGravadas'])
-            ->setMtoOperExoneradas($this->invoice['mtoOperExoneradas'])
-            ->setMtoOperInafectas($this->invoice['mtoOperInafectas'])
-            ->setMtoOperExportacion($this->invoice['mtoOperExportacion'])
-            ->setMtoOperGratuitas($this->invoice['mtoOperGratuitas'])
+            ->setMtoOperGravadas($this->comprobante->mtoopergravadas)
+            ->setMtoOperExoneradas($this->comprobante->mtooperexoneradas)
+            ->setMtoOperInafectas($this->comprobante->mtooperinafectas)
+            ->setMtoOperExportacion($this->comprobante->mtooperexportacion)
+            ->setMtoOperGratuitas($this->comprobante->mtoopergratuitas)
 
             //Impuestos
-            ->setMtoIGV($this->invoice['mtoIGV'])
-            ->setMtoIGVGratuitas($this->invoice['mtoIGVGratuitas'])
-            ->setIcbper($this->invoice['icbper'])
-            ->setTotalImpuestos($this->invoice['totalImpuestos'])
+            ->setMtoIGV($this->comprobante->mtoigv) //todo los igv
+            ->setMtoIGVGratuitas($this->comprobante->mtoigvgratuitas)
+            ->setIcbper($this->comprobante->icbper)
+            ->setTotalImpuestos($this->comprobante->totalimpuestos)
 
             //Totales
-            ->setValorVenta($this->invoice['valorVenta'])
-            ->setSubTotal($this->invoice['subTotal'])
-            ->setRedondeo($this->invoice['redondeo'])
-            ->setMtoImpVenta($this->invoice['mtoImpVenta'])
+            ->setValorVenta($this->comprobante->valorventa)
+            ->setSubTotal($this->comprobante->subtotal)
+            ->setRedondeo($this->comprobante->redondeo)
+            ->setMtoImpVenta($this->comprobante->mtoimpventa)
 
             //Productos
             ->setDetails($this->getSaleDetails())
@@ -101,58 +106,55 @@ class SunatService
     public function getClient()
     {
         return (new Client())
-            ->setTipoDoc($this->invoice['client']['tipoDoc'])
-            ->setNumDoc($this->invoice['client']['numDoc'])
-            ->setRznSocial($this->invoice['client']['rznSocial'])
+            ->setTipoDoc($this->comprobante->tipodocumento->codigo)
+            ->setNumDoc($this->comprobante->customer->numdoc)
+            ->setRznSocial($this->comprobante->customer->nomrazonsocial)
             ->setAddress(
                 (new Address())
-                    ->setDireccion($this->invoice['client']['address']['direccion'])
+                    ->setDireccion($this->comprobante->customer->address)
             );
     }
 
     public function getCompany()
     {
         return (new Company())
-            ->setRuc($this->invoice['company']['ruc'])
-            ->setRazonSocial($this->invoice['company']['razonSocial'])
-            ->setNombreComercial($this->invoice['company']['nombreComercial'])
+            ->setRuc($this->company->ruc)
+            ->setRazonSocial($this->company->razonsocial)
+            ->setNombreComercial($this->company->nombrecomercial)
             ->setAddress(
                 (new Address())
-                    ->setUbigueo($this->invoice['company']['address']['ubigeo'])
-                    ->setDepartamento($this->invoice['company']['address']['departamento'])
-                    ->setProvincia($this->invoice['company']['address']['provincia'])
-                    ->setDistrito($this->invoice['company']['address']['distrito'])
-                    ->setUrbanizacion('-')
-                    ->setDireccion($this->invoice['company']['address']['direccion'])
+                    ->setUbigueo($this->company->ubigeo)
+                    ->setDepartamento("Lima")
+                    ->setProvincia("Lima")
+                    ->setDistrito("Lima")
+                    ->setUrbanizacion($this->company->urbanizacion)
+                    ->setDireccion($this->company->direccion)
             );
-
-        /* return (new \Greenter\Model\Company\Company())
-                ->setRuc('20609278235')
-                ->setRazonSocial('GREENTER S.A.C.'); */
     }
 
     public function getSaleDetails()
     {
         $details = [];
 
-        foreach ($this->invoice['details'] as $item) {
+        foreach ($this->temporals as $item) {
 
             $details[] = (new SaleDetail())
-                ->setCodProducto($item['codProducto'])
-                ->setUnidad($item['unidad'])
-                ->setDescripcion($item['descripcion'])
-                ->setCantidad($item['cantidad'])
-                ->setMtoValorGratuito($item['mtoValorGratuito'])
-                ->setMtoValorUnitario($item['mtoValorUnitario'])
-                ->setMtoBaseIgv($item['mtoBaseIgv'])
-                ->setPorcentajeIgv($item['porcentajeIgv'])
-                ->setIgv($item['igv'])
-                ->setFactorIcbper($item['factorIcbper'])
-                ->setIcbper($item['icbper'])
-                ->setTipAfeIgv($item['tipAfeIgv'])
-                ->setTotalImpuestos($item['totalImpuestos'])
-                ->setMtoValorVenta($item['mtoValorVenta'])
-                ->setMtoPrecioUnitario($item['mtoPrecioUnitario']);
+                ->setCodProducto($item->codigobarras)
+                ->setUnidad($item->um)
+                ->setDescripcion($item->name)
+                ->setCantidad($item->quantity)
+                ->setMtoValorGratuito($item->mtovalorgratuito)
+                ->setMtoValorUnitario($item->mtovalorunitario) //precio unitario sin igv
+                ->setMtoBaseIgv($item->mtobaseigv) // precio unitario sin igv * cantidad
+                ->setPorcentajeIgv($item->porcentajeigv) //18%
+                ->setIgv($item->igv) //igv por item
+                ->setFactorIcbper($item->factoricbper) //como el igv es 18% , aqui es 0.2
+                ->setIcbper($item->icbper) //cantidad * factoricbper
+                ->setTipAfeIgv($item->tipafeigv)
+                ->setTotalImpuestos($item->totalimpuestos)
+                //->setTotalImpuestos($item->igv)//esto esta monentaneo
+                ->setMtoValorVenta($item->mtovalorventa) //cantidad * precio unitario sin igv
+                ->setMtoPrecioUnitario($item->saleprice); //mtoPrecioUnitario es el sale price
         }
 
         return $details;
@@ -163,99 +165,192 @@ class SunatService
     {
         $legends = [];
 
-        foreach ($this->invoice['legends'] as $legend) {
+        // Decodificar el JSON para obtener un array asociativo
+        $legendsArray = json_decode($this->comprobante->legends, true);
 
-            $legends[] = (new Legend())
-                ->setCode($legend['code']) // Catalog. 52
-                ->setValue($legend['value']);
+        if ($legendsArray !== null) {
+            foreach ($legendsArray as $legend) {
+                // Crear objetos Legend y agregarlos al array
+                $legends[] = (new Legend())
+                    ->setCode($legend['code']) // Catalog. 52
+                    ->setValue($legend['value']);
+            }
         }
 
         return $legends;
     }
 
 
-
     //Enviar a Sunat
     public function send()
     {
 
-        $this->result = $this->see->send($this->voucher);
-        $this->invoice['send_xml'] = true;
-        $this->invoice['sunat_success'] = $this->result->isSuccess();
-        //$this->invoice->save();
+       //dd($this->voucher);
 
+        $this->result = $this->see->send($this->voucher);
+        $this->boleta->send_xml = true;
+        $this->boleta->sunat_success = $this->result->isSuccess();
+        $this->boleta->save();
+        //dd($this->boleta);
         // Guardar XML firmado digitalmente.
         $xml = $this->see->getFactory()->getLastXml();
-        $this->invoice['hash'] = (new XmlUtils())->getHashSign($xml);
-        $this->invoice['xml_path'] = 'invoices/xml/' . $this->voucher->getName() . '.xml';
-        Storage::put($this->invoice['xml_path'], $xml, 'public');
+        $this->boleta->hash = (new XmlUtils())->getHashSign($xml);
+        $this->boleta->xml_path = 'invoices/xml/' . $this->voucher->getName() . '.xml';
+        Storage::put($this->boleta->xml_path, $xml, 'public');
 
 
         // Verificamos que la conexión con SUNAT fue exitosa.
-        if (!$this->invoice['sunat_success']) {
+        if (!$this->boleta->sunat_success) {
 
-            $this->invoice['sunat_error'] = [
+            $this->boleta->sunat_error = [
                 'code' => $this->result->getError()->getCode(),
                 'message' => $this->result->getError()->getMessage()
             ];
-            //$this->invoice->save();
+            $this->boleta->save();
 
-            session()->flash('flash.sweetAlert', [
+            /*  session()->flash('flash.sweetAlert', [
                 'icon' => 'error',
-                'title' => 'Codigo Error: ' . $this->invoice['sunat_error']['code'],
-                'text' => $this->invoice['sunat_error']['message']
-            ]);
+                'title' => 'Codigo Error: ' . $this->boleta->sunat_error['code'],
+                'text' => $this->boleta->sunat_error['message']
+            ]); */
 
             return;
         }
 
 
+
         // Guardamos el CDR
-        $this->invoice['sunat_cdr_path'] = "invoices/cdr/R-{$this->voucher->getName()}.zip";
-        Storage::put($this->invoice['sunat_cdr_path'], $this->result->getCdrZip(), 'public');
-        //$this->invoice->save();
+        $this->boleta->sunat_cdr_path = "invoices/cdr/R-{$this->voucher->getName()}.zip";
+        Storage::put($this->boleta->sunat_cdr_path, $this->result->getCdrZip(), 'public');
+        $this->boleta->save();
 
         //Lectura del CDR
         $this->readCdr();
-
-
-        dd($this->invoice);
     }
+
 
     //Lectura del CDR
     public function readCdr()
     {
         $cdr = $this->result->getCdrResponse();
 
-        $this->invoice['cdr_code'] = (int)$cdr->getCode();
-        $this->invoice['cdr_notes'] = count($cdr->getNotes()) ? $cdr->getNotes() : null;
-        $this->invoice['cdr_description'] = $cdr->getDescription();
+        $this->boleta->cdr_code = (int)$cdr->getCode();
+        $this->boleta->cdr_notes = count($cdr->getNotes()) ? $cdr->getNotes() : null;
+        $this->boleta->cdr_description = $cdr->getDescription();
 
-        // $this->invoice->save();
+        $this->boleta->save();
 
-        if ($this->invoice['cdr_code'] === 0) {
+        if ($this->boleta->cdr_code === 0) {
 
-            session()->flash('flash.sweetAlert', [
+            /*  session()->flash('flash.sweetAlert', [
                 'icon' => 'success',
                 'title' => 'ESTADO: ACEPTADA',
-                'text' => $this->invoice['cdr_notes'] ? 'OBSERVACIONES: ' . implode(', ', $cdr->getNotes()) : null,
-                'footer' => $this->invoice['cdr_description'],
-            ]);
-        } else if ($this->invoice['cdr_code'] >= 2000 && $this->invoice['cdr_code'] <= 3999) {
+                'text' => $this->boleta->cdr_notes ? 'OBSERVACIONES: ' . implode(', ', $cdr->getNotes()) : null,
+                'footer' => $this->boleta->cdr_description,
+            ]); */
+        } else if ($this->boleta->cdr_code >= 2000 && $this->boleta->cdr_code <= 3999) {
 
-            session()->flash('flash.sweetAlert', [
+            /* session()->flash('flash.sweetAlert', [
                 'icon' => 'error',
                 'title' => 'ESTADO: RECHAZADA',
-                'footer' => $this->invoice['cdr_description'],
-            ]);
+                'footer' => $this->boleta->cdr_description,
+            ]); */
         } else {
             /* Esto no debería darse, pero si ocurre, es un CDR inválido que debería tratarse como un error-excepción. */
             /*code: 0100 a 1999 */
-            session()->flash('flash.sweetAlert', [
+            /*  session()->flash('flash.sweetAlert', [
                 'icon' => 'error',
                 'title' => 'Excepción',
-                'footer' => $this->invoice['cdr_description'],
-            ]);
+                'footer' => $this->boleta->cdr_description,
+            ]); */
         }
     }
+
+
+
+    public function generatePdfReport()
+    {
+
+        $htmlReport = new HtmlReport(resource_path('views/sunat/template'), ['strict_variables' => true]);
+        $htmlReport->setTemplate((new DefaultTemplateResolver())->getTemplate($this->voucher));
+        //$htmlReport->setTemplate('ticket.html.twig');
+
+        $report = new PdfReport($htmlReport);
+        $report->setOptions([
+            'no-outline',
+            'viewport-size' => '1280x1024',
+            'page-width' => '8cm',
+            'page-height' => '20cm',
+        ]);
+        $report->setBinPath(env('WKHTMLTOPDF_PATH')); // Ruta relativa o absoluta de wkhtmltopdf
+
+        $params = [
+            'system' => [
+                'logo' => $this->company->rectangle_image_path ? Storage::get($this->company->rectangle_image_path) : file_get_contents('img/logos/logo.png'), // Logo de Empresa
+                'hash' => $this->boleta->hash, // Valor Resumen
+            ],
+            'user' => [
+                'header'     => "Telf: <b>{$this->company->phone}</b>", // Texto que se ubica debajo de la dirección de empresa
+                'extras'     => [
+                    // Leyendas adicionales
+                    ['name' => 'CONDICION DE PAGO', 'value' => 'Efectivo'],
+                    ['name' => 'VENDEDOR', 'value' => 'GITHUB SELLER'],
+                ],
+                'footer' => '<p>Nro Resolucion: <b>3232323</b></p>'
+            ]
+        ];
+
+        $pdf = $report->render($this->voucher, $params);
+
+        if ($pdf) {
+            $this->boleta->pdf_path = 'invoices/pdf/' . $this->voucher->getName() . '.pdf';
+            Storage::put($this->boleta->pdf_path, $pdf, 'public');
+
+            $this->boleta->save();
+        }
+    }
+
+
+    public function generatePdfReport2($templateName)
+    {
+        $htmlReport = new HtmlReport(resource_path('views/sunat/template'), ['strict_variables' => true]);
+        $htmlReport->setTemplate((new DefaultTemplateResolver())->getTemplate($templateName)); // Utiliza el nombre de la plantilla proporcionado
+
+        $report = new PdfReport($htmlReport);
+        $report->setOptions([
+            'no-outline',
+            'viewport-size' => '1280x1024',
+            'page-width' => '21cm',
+            'page-height' => '29.7cm',
+        ]);
+        $report->setBinPath(env('WKHTMLTOPDF_PATH')); // Ruta relativa o absoluta de wkhtmltopdf
+
+        $params = [
+            'system' => [
+                'logo' => $this->company->rectangle_image_path ? Storage::get($this->company->rectangle_image_path) : file_get_contents('img/logos/logo.png'), // Logo de Empresa
+                'hash' => $this->boleta->hash, // Valor Resumen
+            ],
+            'user' => [
+                'header'     => "Telf: <b>{$this->company->phone}</b>", // Texto que se ubica debajo de la dirección de empresa
+                'extras'     => [
+                    // Leyendas adicionales
+                    ['name' => 'CONDICION DE PAGO', 'value' => 'Efectivo'],
+                    ['name' => 'VENDEDOR', 'value' => 'GITHUB SELLER'],
+                ],
+                'footer' => '<p>Nro Resolucion: <b>3232323</b></p>'
+            ]
+        ];
+
+        $pdf = $report->render($templateName, $params);
+
+        if ($pdf) {
+            $this->boleta->pdf_path = 'invoices/pdf/' . $templateName . '.pdf'; // Utiliza el nombre de la plantilla para el nombre del archivo PDF
+            Storage::put($this->boleta->pdf_path, $pdf, 'public');
+
+            $this->boleta->save();
+        }
+    }
+
+
+
 }

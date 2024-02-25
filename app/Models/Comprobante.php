@@ -62,4 +62,10 @@ class Comprobante extends Model
         return $this->belongsTo(Tipodocumento::class);
     }
 
+        //factura, boleta
+        public function tipocomprobante()
+        {
+            return $this->belongsTo(Tipocomprobante::class);
+        }
+
 }
