@@ -7,7 +7,7 @@
 
     </x-slot>
 
-    <div class="grid px-4 mx-auto mt-4 max-w-7xl sm:px-6 lg:px-8  ">
+    <div class="grid px-4 mx-auto mt-4 max-w-7xl sm:px-6 lg:px-8 ">
 
         <div class="px-3 bg-white">
 
